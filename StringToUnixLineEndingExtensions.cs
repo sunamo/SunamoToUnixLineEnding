@@ -1,4 +1,5 @@
 namespace SunamoToUnixLineEnding;
+
 public static class StringToUnixLineEndingExtensions
 {
     public static string ToUnixLineEnding(this string s)

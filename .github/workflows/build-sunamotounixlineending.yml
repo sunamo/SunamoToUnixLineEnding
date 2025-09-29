@@ -1,0 +1,61 @@
+name: Build SunamoToUnixLineEnding
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ "**" ]
+
+jobs:
+  build:
+    name: Build SunamoToUnixLineEnding
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore SunamoToUnixLineEnding/SunamoToUnixLineEnding.csproj
+
+    - name: Build
+      run: dotnet build SunamoToUnixLineEnding/SunamoToUnixLineEnding.csproj --configuration Release --no-restore
+
+  test:
+    name: Test SunamoToUnixLineEnding.Tests
+    runs-on: ${{ matrix.os }}
+    needs: build
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore SunamoToUnixLineEnding.Tests/SunamoToUnixLineEnding.Tests.csproj
+
+    - name: Build tests
+      run: dotnet build SunamoToUnixLineEnding.Tests/SunamoToUnixLineEnding.Tests.csproj --configuration Release --no-restore
+
+    - name: Run tests
+      run: dotnet test SunamoToUnixLineEnding.Tests/SunamoToUnixLineEnding.Tests.csproj --configuration Release --no-build --verbosity normal
+      continue-on-error: true

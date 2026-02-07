@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="SunamoToUnixLineEnding.Tests\\SunamoToUnixLineEnding.Tests.csproj" />
+  <Project Path="RunnerToUnixLineEnding\\RunnerToUnixLineEnding.csproj" />
+  <Project Path="SunamoToUnixLineEnding\SunamoToUnixLineEnding.csproj" />
+</Solution>

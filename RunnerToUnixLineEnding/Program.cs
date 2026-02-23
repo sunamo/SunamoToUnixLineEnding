@@ -1,3 +1,4 @@
+// variables names: ok
 using SunamoToUnixLineEnding.Tests;
 
 namespace RunnerToUnixLineEnding;

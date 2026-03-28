@@ -1,30 +1,67 @@
 // variables names: ok
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SunamoToUnixLineEnding.Tests;
+
+/// <summary>
+/// Tests for verifying Unix line ending conversion from file content.
+/// </summary>
 public class LoadingFromFileTests
 {
-    public void DoTest()
+    /// <summary>
+    /// Tests that ToUnixLineEnding correctly converts Windows line endings to Unix line endings
+    /// when reading from files.
+    /// </summary>
+    [Fact]
+    public void ToUnixLineEnding_ConvertsWindowsLineEndings()
     {
-        var bp = @"D:\_Test\PlatformIndependentNuGetPackages\SunamoToUnixLineEnding\";
-        var name = bp + @"name.txt";
-        var rn = bp + @"rn.txt";
+        var tempDirectory = Path.Combine(Path.GetTempPath(), "SunamoToUnixLineEnding_Tests");
+        Directory.CreateDirectory(tempDirectory);
 
-        List<string> list = ["a", "c"];
-        File.WriteAllText(name, string.Join("\n", list));
-        File.WriteAllText(rn, string.Join("\r\n", list));
+        var unixFilePath = Path.Combine(tempDirectory, "unix.txt");
+        var windowsFilePath = Path.Combine(tempDirectory, "windows.txt");
 
-        var n2 = File.ReadAllLines(name);
-        var rn2 = File.ReadAllLines(rn);
+        try
+        {
+            List<string> list = ["a", "c"];
+            File.WriteAllText(unixFilePath, string.Join("\n", list));
+            File.WriteAllText(windowsFilePath, string.Join("\r\n", list));
 
-        var n3 = File.ReadAllText(name);
-        var rn3 = File.ReadAllText(rn);
+            var unixContent = File.ReadAllText(unixFilePath);
+            var windowsContent = File.ReadAllText(windowsFilePath);
+
+            var convertedContent = windowsContent.ToUnixLineEnding();
+
+            Assert.Equal(unixContent, convertedContent);
+            Assert.DoesNotContain("\r\n", convertedContent);
+        }
+        finally
+        {
+            if (File.Exists(unixFilePath)) File.Delete(unixFilePath);
+            if (File.Exists(windowsFilePath)) File.Delete(windowsFilePath);
+            if (Directory.Exists(tempDirectory)) Directory.Delete(tempDirectory, false);
+        }
+    }
+
+    /// <summary>
+    /// Tests that ToUnixLineEnding on IList converts all elements' line endings to Unix format.
+    /// </summary>
+    [Fact]
+    public void ToUnixLineEnding_ConvertsList()
+    {
+        List<string> list = ["line1\r\nline2", "line3\r\nline4"];
+
+        IList<string> convertedList = list.ToUnixLineEnding();
+
+        Assert.Equal("line1\nline2", convertedList[0]);
+        Assert.Equal("line3\nline4", convertedList[1]);
+    }
+
+    /// <summary>
+    /// Runs the file-based line ending conversion test manually.
+    /// </summary>
+    internal void DoTest()
+    {
+        ToUnixLineEnding_ConvertsWindowsLineEndings();
+        ToUnixLineEnding_ConvertsList();
     }
 }

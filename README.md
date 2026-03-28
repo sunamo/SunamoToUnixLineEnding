@@ -1,6 +1,6 @@
 # SunamoToUnixLineEnding
 
-Extension method for forced conversion of \r\n to \n for use by the same applications on Windows and Linux
+Extension methods for forced conversion of `\r\n` to `\n` for use by the same applications on Windows and Linux.
 
 ## Overview
 
@@ -10,13 +10,13 @@ SunamoToUnixLineEnding is part of the Sunamo package ecosystem, providing modula
 
 ### Key Classes
 
-- **Consts2**
-- **IListToUnixLineEndingExtensions**
-- **StringToUnixLineEndingExtensions**
+- **Consts2** - Constants for line ending characters (`Newline`, `CarriageReturnNewline`)
+- **IListToUnixLineEndingExtensions** - Extension method for converting line endings in `IList<string>`
+- **StringToUnixLineEndingExtensions** - Extension method for converting line endings in `string`
 
 ### Key Methods
 
-- `ToUnixLineEnding()`
+- `ToUnixLineEnding()` - Converts all line endings to Unix format (LF only)
 
 ## Installation
 
@@ -24,17 +24,30 @@ SunamoToUnixLineEnding is part of the Sunamo package ecosystem, providing modula
 dotnet add package SunamoToUnixLineEnding
 ```
 
+## Usage
+
+```csharp
+using SunamoToUnixLineEnding;
+
+// Convert a single string
+string text = "Hello\r\nWorld";
+string unixText = text.ToUnixLineEnding(); // "Hello\nWorld"
+
+// Convert all strings in a list
+IList<string> lines = new List<string> { "line1\r\npart1", "line2\r\npart2" };
+lines.ToUnixLineEnding(); // All elements now use \n
+```
+
 ## Dependencies
 
-- **Microsoft.Extensions.Logging.Abstractions** (v9.0.3)
+- **Microsoft.Extensions.Logging.Abstractions**
 
 ## Package Information
 
 - **Package Name**: SunamoToUnixLineEnding
-- **Version**: 25.3.29.1
-- **Target Framework**: net9.0
+- **Target Frameworks**: net10.0, net9.0, net8.0
+- **License**: MIT
 - **Category**: Platform-Independent NuGet Package
-- **Source Files**: 3
 
 ## Related Packages
 

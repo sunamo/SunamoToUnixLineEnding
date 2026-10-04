@@ -1,5 +1,10 @@
 # SunamoToUnixLineEnding
 
+## Short description
+
+Rozšiřující metody pro vynucený převod konců řádků z \r\n na \n, aby aplikace fungovaly stejně na Windows i Linuxu. Součást sbírky pinp s testy a Runnerem.
+
+
 Extension methods for forced conversion of `\r\n` to `\n` for use by the same applications on Windows and Linux.
 
 ## Overview
